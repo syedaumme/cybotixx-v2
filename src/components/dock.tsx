@@ -48,8 +48,8 @@ const Dock = () => {
           visible ? "translate-y-0" : "translate-y-full md:translate-y-full"
         )}
       >
-        <div className="aspect-square flex justify-center items-center relative h-full">
-          <div className="p-2 rounded-md bg-white/10">
+        <div className="aspect-square cursor-pointer flex justify-center items-center relative h-full">
+          <div className="p-2 rounded-md hover:bg-white/5 bg-white/10">
             <Calendar />
           </div>
           <div className="absolute bottom-0 left-50 bg-green-500 h-0.5 w-1/2" />
