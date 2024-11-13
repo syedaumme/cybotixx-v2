@@ -6,12 +6,14 @@ const HomePage = () => {
   return (
     <section
       id="hero"
-      className="flex flex-col justify-center rounded-lg py-20 items-center md:h-[calc(100vh-64px)] "
+      className="flex flex-col justify-center rounded-lg h-screen items-center"
     >
-      <TypewriterEffectSmooth
-        words={typewriterWords}
-        className="lg:text-3xl xl:text-5xl md:text-2xl text-lg"
-      />
+      <div className="h-1/2">
+        <TypewriterEffectSmooth
+          words={typewriterWords}
+          className="text-3xl text-wrap md:text-5xl"
+        />
+      </div>
     </section>
   );
 };
