@@ -1,7 +1,16 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { Calendar } from "lucide-react";
+import { Calendar, Images, LucideIcon, Users } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
+
+interface DockItemProps {
+  label: string;
+  icon: LucideIcon;
+  disabled?: boolean;
+  url: string;
+}
 
 const Dock = () => {
   const [visible, setVisible] = useState(false);
@@ -9,6 +18,29 @@ const Dock = () => {
   const [scrollY, setScrollY] = useState(0);
 
   const [isMobile, setIsMobile] = useState(false);
+
+  const pathname = usePathname();
+
+  const dockItems: DockItemProps[] = [
+    {
+      label: "Events",
+      icon: Calendar,
+      disabled: false,
+      url: "/events",
+    },
+    {
+      label: "Gallery",
+      icon: Images,
+      disabled: false,
+      url: "/gallery",
+    },
+    {
+      label: "Members",
+      icon: Users,
+      disabled: false,
+      url: "/members",
+    },
+  ];
 
   useEffect(() => {
     // Check if the screen width is less than 768px (mobile)
@@ -44,16 +76,35 @@ const Dock = () => {
     >
       <div
         className={cn(
-          "border flex justify-start space-x-2 items-center rounded-lg relative bg-white/5 backdrop-blur-md h-full w-full transition-transform duration-300 ease-in-out transform md:w-1/3",
-          visible ? "translate-y-0" : "translate-y-full md:translate-y-full"
+          "border flex justify-center items-center rounded-lg relative bg-white/5 backdrop-blur-md h-full w-fit max-w-full transition-transform duration-300 ease-in-out transform md:max-w-1/3",
+          visible ? "translate-y-0" : "translate-y-full"
         )}
       >
-        <div className="aspect-square cursor-pointer flex justify-center items-center relative h-full">
-          <div className="p-2 rounded-md hover:bg-white/5 bg-white/10">
-            <Calendar />
-          </div>
-          <div className="absolute bottom-0 left-50 bg-green-500 h-0.5 w-1/2" />
-        </div>
+        {dockItems.map((item) => {
+          const isActive = pathname.includes(item.url);
+          return (
+            <Link
+              href={item.url}
+              key={item.url}
+              className="aspect-square cursor-pointer flex justify-center items-center relative h-full"
+            >
+              <div
+                className={cn(
+                  "p-2 rounded-md hover:bg-white/10 transition duration-100",
+                  isActive && "bg-white/10 text-green-200"
+                )}
+              >
+                {<item.icon />}
+              </div>
+              <div
+                className={cn(
+                  "absolute bottom-0 left-50 bg-green-500 h-0.5 w-1/2 scale-x-0 transition-transform duration-200 ease-in-out transform",
+                  isActive && "scale-x-100"
+                )}
+              />
+            </Link>
+          );
+        })}
       </div>
     </div>
   );
