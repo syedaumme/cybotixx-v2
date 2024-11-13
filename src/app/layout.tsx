@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
+import Image from "next/image";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -37,8 +38,16 @@ export default function RootLayout({
     >
       <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased relative min-h-screen p-2`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased relative min-h-screen`}
         >
+          <Image
+            src={`/cybotix-dark.png`}
+            alt="background"
+            height={500}
+            width={500}
+            className="aspect-square opacity-5 blur-[3px] fixed top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2"
+          />
+
           <ThemeProvider
             disableTransitionOnChange
             attribute="class"
