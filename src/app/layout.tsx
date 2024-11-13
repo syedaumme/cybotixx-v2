@@ -40,13 +40,13 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased relative min-h-screen`}
         >
-          <Image
+          {/* <Image
             src={`/cybotix-dark.png`}
             alt="background"
             height={500}
             width={500}
             className="aspect-square opacity-5 blur-[3px] fixed top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2"
-          />
+          /> */}
 
           <ThemeProvider
             disableTransitionOnChange

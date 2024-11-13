@@ -29,6 +29,11 @@ const PageHeader = () => {
       url: "/members",
       subHeading: "Our Team",
     },
+    {
+      heading: "Profile",
+      url: "/profile",
+      subHeading: "Manage Your Profile",
+    },
   ];
 
   return (

@@ -1,6 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { Calendar, Images, LucideIcon, Users } from "lucide-react";
+import { Calendar, Images, LucideIcon, User, Users } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -39,6 +39,12 @@ const Dock = () => {
       icon: Users,
       disabled: false,
       url: "/members",
+    },
+    {
+      label: "Profile",
+      icon: User,
+      disabled: false,
+      url: "/profile",
     },
   ];
 
