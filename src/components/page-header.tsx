@@ -2,7 +2,7 @@
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import React from "react";
-import { Separator } from "./ui/separator";
+import { AnimatePresence, motion } from "framer-motion";
 
 type HeaderSectionType = {
   heading: string;
@@ -37,25 +37,34 @@ const PageHeader = () => {
   ];
 
   return (
-    <div className="p-2 text-center">
+    <div className="p-2 text-center flex justify-center items-center">
       {headerSection.map((item) => {
         const isActive = pathname.includes(item.url);
 
         return (
-          <div
-            key={item.url}
-            className={cn("hidden flex-col gap-1", isActive && "flex")}
-          >
-            <h1 className="md:text-4xl font-semibold md:font-bold text-3xl">
-              {item.heading}
-            </h1>
-            <p className="text-gray-300 text-xs md:text-sm">
-              {item.subHeading}
-            </p>
-          </div>
+          <AnimatePresence mode="wait" key={item.url}>
+            <motion.div
+              key={pathname}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.1 }}
+            >
+              <div
+                key={item.url}
+                className={cn("flex-col hidden", isActive && "flex")}
+              >
+                <h1 className="md:text-4xl font-semibold md:font-bold text-3xl">
+                  {item.heading}
+                </h1>
+                <p className="text-gray-300 text-xs md:text-sm">
+                  {item.subHeading}
+                </p>
+              </div>
+            </motion.div>
+          </AnimatePresence>
         );
       })}
-      <Separator className="mt-5 w-full" />
     </div>
   );
 };
