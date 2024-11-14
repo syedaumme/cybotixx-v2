@@ -8,8 +8,8 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="w-screen flex justify-center items-center pt-5">
-      <div className="md:w-1/2 w-screen">
+    <main className="w-full flex justify-center items-center pt-5 pb-20">
+      <div className="md:w-1/2 w-full ">
         <PageHeader />
         <Separator className="mt-5 w-full" />
         {children}

@@ -1,26 +1,37 @@
-// import Image from "next/image";
-import { UserButton } from "@clerk/nextjs";
-import { SignedIn } from "@clerk/nextjs";
+"use client";
 import React from "react";
-// import { currentUser } from "@clerk/nextjs/server";
+import { useGetUserByClerkId } from "@/features/users/api/use-get-user";
+import { useAuth } from "@clerk/nextjs";
+import ProfileForm from "./_components/profile-form";
+import { LoaderIcon } from "lucide-react";
 
-const ProfilePage = async () => {
-  // const user = await currentUser();
+const ProfilePage = () => {
+  const { userId } = useAuth();
+
+  const { data, isLoading } = useGetUserByClerkId({
+    clerkId: userId as string,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <LoaderIcon className="size-10 text-green-500 animate-spin" />
+      </div>
+    );
+  }
+
+  if (!data) return;
 
   return (
-    <div className="h-full w-full p-10">
-      <div className="w-full flex justify-center items-center">
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
-        {/* <Image
-          src={user?.imageUrl as string}
-          alt="user_image"
-          className="h-14 w-14 rounded-full"
-          width={200}
-          height={200}
-        /> */}
-      </div>
+    <div className="w-full flex justify-center items-center">
+      <ProfileForm
+        fullName={data.fullName}
+        registerNumber={data.registerNumber}
+        courseName={data.courseName}
+        courseYear={data.courseYear}
+        phoneNumber={data.phoneNumber}
+        clerkId={data.clerkId}
+      />
     </div>
   );
 };

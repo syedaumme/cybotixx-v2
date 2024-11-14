@@ -1,7 +1,6 @@
 "use client";
-
-import { z } from "zod";
 import React from "react";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -14,7 +13,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
 import {
   Select,
   SelectContent,
@@ -22,7 +20,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useAuth } from "@clerk/nextjs";
 import { useCreateUser } from "@/features/users/api/use-create-user";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -37,21 +34,35 @@ const formSchema = z.object({
   clerkId: z.string(),
 });
 
-const OnboardingForm = () => {
-  const { userId } = useAuth();
+interface ProfileFormProps {
+  fullName: string;
+  registerNumber: string;
+  courseName: string;
+  courseYear: string;
+  phoneNumber: string;
+  clerkId: string;
+}
 
+const ProfileForm = ({
+  fullName,
+  registerNumber,
+  courseName,
+  courseYear,
+  phoneNumber,
+  clerkId,
+}: ProfileFormProps) => {
   const { mutate, isPending } = useCreateUser();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fullName: "",
-      registerNumber: "",
-      courseName: "",
-      courseYear: "",
-      phoneNumber: "",
-      clerkId: userId as string,
+      fullName,
+      registerNumber,
+      courseName,
+      courseYear,
+      phoneNumber,
+      clerkId,
     },
   });
 
@@ -66,14 +77,7 @@ const OnboardingForm = () => {
   }
 
   return (
-    <div className="my-10 w-full mx-4 md:w-1/3 sm:w-1/2 space-y-4">
-      <div className="flex flex-col">
-        <h1 className="text-3xl font-semibold">Onboarding</h1>
-        <p className="text-md text-gray-300">
-          Basic information to get to know you.
-        </p>
-      </div>
-      <Separator />
+    <div className="pt-10 w-full md:w-[80%] md:px-0 px-4">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
@@ -83,7 +87,12 @@ const OnboardingForm = () => {
               <FormItem>
                 <FormLabel>Full Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="e.g. John Doe" className="" {...field} />
+                  <Input
+                    disabled
+                    placeholder="e.g. John Doe"
+                    className=""
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -98,6 +107,7 @@ const OnboardingForm = () => {
                 <FormControl>
                   <Input
                     placeholder="e.g. 23BCAJC020"
+                    disabled
                     className=""
                     {...field}
                   />
@@ -118,7 +128,7 @@ const OnboardingForm = () => {
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger className="">
+                      <SelectTrigger disabled className="">
                         <SelectValue placeholder="Select course" />
                       </SelectTrigger>
                     </FormControl>
@@ -141,7 +151,7 @@ const OnboardingForm = () => {
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger disabled className="w-full">
                         <SelectValue placeholder="Select current academic year" />
                       </SelectTrigger>
                     </FormControl>
@@ -164,6 +174,7 @@ const OnboardingForm = () => {
                 <FormLabel>Phone Number</FormLabel>
                 <FormControl>
                   <Input
+                    disabled
                     placeholder="e.g. 9658423014"
                     className=""
                     type="number"
@@ -176,13 +187,13 @@ const OnboardingForm = () => {
           />
           <Button
             type="submit"
-            disabled={isPending}
+            disabled
             className="w-full bg-primary/50 hover:bg-primary/70 border-green-600 border text-white"
           >
             {isPending ? (
               <LoaderIcon className="text-white size-4 animate-spin" />
             ) : (
-              "Submit"
+              "Save"
             )}
           </Button>
         </form>
@@ -191,4 +202,4 @@ const OnboardingForm = () => {
   );
 };
 
-export default OnboardingForm;
+export default ProfileForm;
