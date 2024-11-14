@@ -78,7 +78,7 @@ const Dock = () => {
     <div
       onMouseEnter={() => setVisible(true)}
       onMouseLeave={() => setVisible(false)}
-      className="fixed bottom-0 md:p-3 left-0 w-full h-14 md:h-20 flex justify-center items-center "
+      className="fixed bottom-0 md:p-3 left-0 w-full h-14 md:mb-0 mb-3 md:h-20 flex justify-center items-center "
     >
       <div
         className={cn(

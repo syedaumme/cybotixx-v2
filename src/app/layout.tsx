@@ -4,7 +4,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
-import Image from "next/image";
+import { Toaster } from "@/components/ui/sonner";
+import { ConvexClientProvider } from "@/components/convex-client-provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -54,7 +55,10 @@ export default function RootLayout({
             defaultTheme="dark"
             enableSystem
           >
-            {children}
+            <ConvexClientProvider>
+              {children}
+              <Toaster />
+            </ConvexClientProvider>
           </ThemeProvider>
         </body>
       </html>

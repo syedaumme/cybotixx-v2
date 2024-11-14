@@ -23,6 +23,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useAuth } from "@clerk/clerk-react";
+import { useCreateUser } from "@/features/users/api/use-create-user";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { LoaderIcon } from "lucide-react";
 
 const formSchema = z.object({
   fullName: z.string().min(2).max(100),
@@ -30,11 +34,15 @@ const formSchema = z.object({
   courseName: z.string().max(10),
   courseYear: z.string().min(1),
   phoneNumber: z.string().min(1).max(10),
-  userId: z.string(),
+  clerkId: z.string(),
 });
 
 const OnboardingForm = () => {
   const { userId } = useAuth();
+
+  const { mutate, isPending } = useCreateUser();
+
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,16 +52,20 @@ const OnboardingForm = () => {
       courseName: "",
       courseYear: "",
       phoneNumber: "",
-      userId: userId as string,
+      clerkId: userId as string,
     },
   });
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    mutate(values, {
+      onSuccess() {
+        toast.success("Successfully");
+        router.push("/profile");
+      },
+    });
   }
+
   return (
     <div className="my-10 w-full mx-4 md:w-1/3 sm:w-1/2 space-y-4">
       <div className="flex flex-col">
@@ -156,7 +168,6 @@ const OnboardingForm = () => {
                     placeholder="e.g. 9658423014"
                     className=""
                     type="number"
-                    maxLength={10}
                     {...field}
                   />
                 </FormControl>
@@ -166,9 +177,14 @@ const OnboardingForm = () => {
           />
           <Button
             type="submit"
+            disabled={isPending}
             className="w-full bg-primary/50 hover:bg-primary/70 border-green-600 border text-white"
           >
-            Submit
+            {isPending ? (
+              <LoaderIcon className="text-white size-4 animate-spin" />
+            ) : (
+              "Submit"
+            )}
           </Button>
         </form>
       </Form>
