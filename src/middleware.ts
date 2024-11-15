@@ -8,6 +8,8 @@ const isPublicRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)", "/"]);
 
 const isPrivateRoute = createRouteMatcher(["/events(.*)", "/gallery(.*)", "/members(.*)", "/profile(.*)"])
 
+const isOnboardingRoute = createRouteMatcher(["/onboarding"])
+
 
 
 export default clerkMiddleware(async (auth, request) => {
@@ -19,6 +21,10 @@ export default clerkMiddleware(async (auth, request) => {
 
   if(!convex_user_id && isPrivateRoute(request)) {
     return NextResponse.redirect(`${process.env.SITE_URL}/onboarding`)
+  }
+
+  if(convex_user_id && isOnboardingRoute(request)) {
+    return NextResponse.redirect(`${process.env.SITE_URL}/events`)
   }
  
 });
