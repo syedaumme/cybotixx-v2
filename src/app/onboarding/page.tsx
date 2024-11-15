@@ -5,7 +5,7 @@ import { useGetUserByClerkId } from "@/features/users/api/use-get-user";
 import { useAuth } from "@clerk/nextjs";
 import { LoaderIcon } from "lucide-react";
 import Cookies from "js-cookie";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const OnboardingPage = () => {
   const { userId } = useAuth();
@@ -13,6 +13,8 @@ const OnboardingPage = () => {
   const { data, isLoading } = useGetUserByClerkId({
     clerkId: userId as string,
   });
+
+  const router = useRouter();
 
   if (isLoading) {
     return (
@@ -28,8 +30,8 @@ const OnboardingPage = () => {
       path: "/",
     });
 
-    redirect("/events"); // Redirect if user data is found
     return null; // Prevent rendering further
+    router.replace("/events"); // Redirect if user data is found
   }
 
   // Render onboarding form if no user data exists

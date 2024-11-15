@@ -4,15 +4,8 @@ import { useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 
 type RequestType = {
-  fullName: string;
-  registerNumber: string;
-  courseName: string;
-  courseYear: string;
-  phoneNumber: string;
-  clerkId: string;
-  clerkImageUrl: string;
-  prizesWon: number;
-  participations: number;
+  convex_user_id: Id<"users">;
+  roleType: string;
 };
 
 type ResponseType = Id<"users"> | null;
@@ -24,7 +17,7 @@ type Options = {
   throwError?: boolean;
 };
 
-export const useCreateUser = () => {
+export const useAssignRoleType = () => {
   const [data] = useState<ResponseType>(null);
   const [error] = useState<Error | null>(null);
   const [status, setStatus] = useState<
@@ -36,13 +29,16 @@ export const useCreateUser = () => {
   const isSettled = useMemo(() => status === "settled", [status]);
   const isError = useMemo(() => status === "error", [status]);
 
-  const mutation = useMutation(api.users.createUser);
+  const mutation = useMutation(api.users.assignRoleType);
 
   const mutate = useCallback(
     async (values: RequestType, options?: Options) => {
       try {
         setStatus("pending");
-        const response = await mutation(values);
+        const response = await mutation({
+          convex_user_id: values.convex_user_id,
+          roleType: values.roleType,
+        });
         options?.onSuccess?.(response);
         return response;
       } catch (error) {

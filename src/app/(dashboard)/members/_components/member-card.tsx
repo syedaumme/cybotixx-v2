@@ -28,8 +28,10 @@ const MemberCard = ({ convex_user_id }: { convex_user_id: Id<"users"> }) => {
   console.log(data);
 
   return (
-    <DialogContent className="border rounded-lg h-fit w-[80%] aspect-square">
-      <div className="flex justify-center md:justify-start md:mt-10 items-center gap-y-2 md:gap-y-4 p-4 flex-col">
+    <DialogContent className="rounded-lg h-fit border border-white/20 w-[80%] aspect-square">
+      <h1 className="w-full text-center text-2xl md:text-4xl font-semibold">Member Card</h1>
+      <Separator />
+      <div className="flex justify-center md:justify-start md:mt-3 items-center gap-y-2 md:gap-y-4 p-4 flex-col">
         <Image
           src={data.clerkImageUrl}
           alt="profile_pic"
@@ -85,7 +87,7 @@ const MemberCard = ({ convex_user_id }: { convex_user_id: Id<"users"> }) => {
             <p
               className={`${gaMaamli.className}  text-3xl md:text-4xl  h-full flex justify-center items-center`}
             >
-              +1
+              +{data.prizesWon}
             </p>
           </div>
           <div className="bg-white/5 border border-white/40 rounded-lg w-full flex flex-col p-2 md:p-4 text-center">
@@ -94,7 +96,7 @@ const MemberCard = ({ convex_user_id }: { convex_user_id: Id<"users"> }) => {
             <p
               className={`${gaMaamli.className} h-full flex justify-center items-center text-3xl md:text-4xl`}
             >
-              +23
+              +{data.participations}
             </p>
           </div>
         </div>

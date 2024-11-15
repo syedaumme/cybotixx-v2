@@ -76,6 +76,8 @@ const OnboardingForm = () => {
           phoneNumber,
           clerkId: userId as string,
           clerkImageUrl: userImageUrl as string,
+          prizesWon: 0,
+          participations: 0,
         },
         {
           onSuccess(data) {

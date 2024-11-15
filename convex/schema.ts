@@ -11,5 +11,7 @@ export default defineSchema({
     clerkId: v.string(),
     clerkImageUrl: v.string(),
     roleType: v.string(),
+    prizesWon: v.number(),
+    participations: v.number(),
   }),
 });
