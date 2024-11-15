@@ -1,6 +1,5 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { cookies } from "next/headers";
 
 export const createUser = mutation({
   args: {
@@ -12,7 +11,7 @@ export const createUser = mutation({
     clerkId: v.string(),
   },
   handler: async (ctx, args) => {
-    const cookieStore = await cookies()
+    // const cookieStore = await cookies();
     const existingUser = await ctx.db
       .query("users")
       .filter((q) => q.eq(q.field("clerkId"), args.clerkId))
@@ -29,16 +28,13 @@ export const createUser = mutation({
       clerkId: args.clerkId,
     });
 
-
-
-    cookieStore.set({
-      name: 'convex_user_id',
-      value: userId,
-      httpOnly: true,
-      path: '/',
-      secure: true
-
-    })
+    // cookieStore.set({
+    //   name: "convex_user_id",
+    //   value: userId,
+    //   httpOnly: true,
+    //   path: "/",
+    //   maxAge: 60 * 60 * 24 * 7, // 7 days
+    // });
 
     return userId;
   },

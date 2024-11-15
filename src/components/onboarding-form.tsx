@@ -27,6 +27,7 @@ import { useCreateUser } from "@/features/users/api/use-create-user";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { LoaderIcon } from "lucide-react";
+import Cookies from "js-cookie";
 
 const formSchema = z.object({
   fullName: z.string().min(2).max(100),
@@ -51,18 +52,42 @@ const OnboardingForm = () => {
       courseName: "",
       courseYear: "",
       phoneNumber: "",
-      clerkId: userId as string,
+      clerkId: "",
     },
   });
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    mutate(values, {
-      onSuccess() {
-        toast.success("Successfully");
-        router.push("/profile");
-      },
-    });
+    try {
+      const { fullName, registerNumber, courseName, courseYear, phoneNumber } =
+        values;
+      console.log(values);
+
+      mutate(
+        {
+          fullName,
+          registerNumber,
+          courseName,
+          courseYear,
+          phoneNumber,
+          clerkId: userId as string,
+        },
+        {
+          onSuccess(data) {
+            if (data) {
+              Cookies.set("convex_user_id", data, {
+                expires: 7,
+                path: "/",
+              });
+            }
+            toast.success("Created Successfully");
+            router.push("/profile");
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -176,7 +201,6 @@ const OnboardingForm = () => {
           />
           <Button
             type="submit"
-            disabled={isPending}
             className="w-full bg-primary/50 hover:bg-primary/70 border-green-600 border text-white"
           >
             {isPending ? (
