@@ -12,6 +12,13 @@ import {
   ShieldHalf,
   SwordsIcon,
 } from "lucide-react";
+import { Ga_Maamli } from "next/font/google";
+import { Separator } from "@/components/ui/separator";
+
+const gaMaamli = Ga_Maamli({
+  subsets: ["latin"],
+  weight: ["400"],
+});
 
 const MemberCard = ({ convex_user_id }: { convex_user_id: Id<"users"> }) => {
   const { data } = useGetMemberByConvexId({ convex_user_id });
@@ -21,8 +28,8 @@ const MemberCard = ({ convex_user_id }: { convex_user_id: Id<"users"> }) => {
   console.log(data);
 
   return (
-    <DialogContent className="border h-60 w-[80%] aspect-square">
-      <div className="flex justify-center items-center gap-y-2 h-fit p-4 flex-col">
+    <DialogContent className="border rounded-lg h-fit w-[80%] aspect-square">
+      <div className="flex justify-center md:justify-start md:mt-10 items-center gap-y-2 md:gap-y-4 p-4 flex-col">
         <Image
           src={data.clerkImageUrl}
           alt="profile_pic"
@@ -71,8 +78,25 @@ const MemberCard = ({ convex_user_id }: { convex_user_id: Id<"users"> }) => {
         <p className="font-medium text-lg flex items-center justify-center text-center text-pretty">
           {data.fullName}
         </p>
-        <div className="border w-full h-10">
-          
+        <div className="flex gap-8 w-full md:h-40">
+          <div className="bg-white/5 border border-white/40 rounded-lg w-full flex flex-col p-2 md:p-4 text-center">
+            <p className="text-xs md:text-sm">Prizes Won</p>
+            <Separator className="mt-1" />
+            <p
+              className={`${gaMaamli.className}  text-3xl md:text-4xl  h-full flex justify-center items-center`}
+            >
+              +1
+            </p>
+          </div>
+          <div className="bg-white/5 border border-white/40 rounded-lg w-full flex flex-col p-2 md:p-4 text-center">
+            <p className="text-xs md:text-sm">Participations</p>
+            <Separator className="mt-1" />
+            <p
+              className={`${gaMaamli.className} h-full flex justify-center items-center text-3xl md:text-4xl`}
+            >
+              +23
+            </p>
+          </div>
         </div>
       </div>
     </DialogContent>
