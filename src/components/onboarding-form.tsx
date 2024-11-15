@@ -81,7 +81,7 @@ const OnboardingForm = () => {
               });
             }
             toast.success("Created Successfully");
-            router.push("/profile");
+            router.push("/events");
           },
         }
       );

@@ -17,7 +17,7 @@ export const createUser = mutation({
       .filter((q) => q.eq(q.field("clerkId"), args.clerkId))
       .first();
 
-    if (existingUser) return;
+    if (existingUser) return existingUser._id;
 
     const userId = await ctx.db.insert("users", {
       fullName: args.fullName,

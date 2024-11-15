@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -24,6 +24,7 @@ import { useCreateUser } from "@/features/users/api/use-create-user";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { LoaderIcon } from "lucide-react";
+import { UserButton } from "@clerk/nextjs";
 
 const formSchema = z.object({
   fullName: z.string().min(2).max(100),
@@ -78,6 +79,11 @@ const ProfileForm = ({
 
   return (
     <div className="pt-10 w-full md:w-[80%] md:px-0 px-4">
+      <div className="w-full flex justify-center p-5 pb-14 items-center">
+        <div className="size-14">
+          <UserButton />
+        </div>
+      </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField

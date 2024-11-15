@@ -31,7 +31,9 @@ const HomePage = () => {
           <p className="text-lg md:text-2xl font-semibold">CYBOTIXX</p>
         </div>
         <SignedIn>
-          <UserButton />
+          <div className="md:size-10 size-8">
+            <UserButton />
+          </div>
         </SignedIn>
         <SignedOut>
           <Button
