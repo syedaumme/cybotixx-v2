@@ -22,7 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useAuth } from "@clerk/nextjs";
+import { useAuth, useUser } from "@clerk/nextjs";
 import { useCreateUser } from "@/features/users/api/use-create-user";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -36,10 +36,13 @@ const formSchema = z.object({
   courseYear: z.string().min(1),
   phoneNumber: z.string().min(1).max(10),
   clerkId: z.string(),
+  clerkImageUrl: z.string(),
 });
 
 const OnboardingForm = () => {
   const { userId } = useAuth();
+
+  const userImageUrl = useUser().user?.imageUrl;
 
   const { mutate, isPending } = useCreateUser();
   const router = useRouter();
@@ -53,6 +56,7 @@ const OnboardingForm = () => {
       courseYear: "",
       phoneNumber: "",
       clerkId: "",
+      clerkImageUrl: "",
     },
   });
 
@@ -71,6 +75,7 @@ const OnboardingForm = () => {
           courseYear,
           phoneNumber,
           clerkId: userId as string,
+          clerkImageUrl: userImageUrl as string,
         },
         {
           onSuccess(data) {

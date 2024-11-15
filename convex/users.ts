@@ -9,6 +9,7 @@ export const createUser = mutation({
     courseYear: v.string(),
     phoneNumber: v.string(),
     clerkId: v.string(),
+    clerkImageUrl: v.string(),
   },
   handler: async (ctx, args) => {
     // const cookieStore = await cookies();
@@ -26,6 +27,8 @@ export const createUser = mutation({
       courseYear: args.courseYear,
       phoneNumber: args.phoneNumber,
       clerkId: args.clerkId,
+      clerkImageUrl: args.clerkImageUrl,
+      roleType: "MEMBER",
     });
 
     // cookieStore.set({
@@ -53,5 +56,27 @@ export const getUserByClerkId = query({
     if (!user) return;
 
     return user;
+  },
+});
+
+export const getMembers = query({
+  args: {},
+  handler: async (ctx) => {
+    const members = await ctx.db.query("users").collect();
+
+    return members;
+  },
+});
+
+export const getMember = query({
+  args: {
+    convex_user_id: v.id("users"),
+  },
+  handler: async (ctx, args) => {
+    const member = await ctx.db.get(args.convex_user_id);
+
+    if (!member) return;
+
+    return member;
   },
 });

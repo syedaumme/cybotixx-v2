@@ -1,32 +1,32 @@
-import { clerkMiddleware, createRouteMatcher, getAuth } from "@clerk/nextjs/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
-
 
 const isPublicRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)", "/"]);
 
-const isPrivateRoute = createRouteMatcher(["/events(.*)", "/gallery(.*)", "/members(.*)", "/profile(.*)"])
+const isPrivateRoute = createRouteMatcher([
+  "/events(.*)",
+  "/gallery(.*)",
+  "/members(.*)",
+  "/profile(.*)",
+]);
 
-const isOnboardingRoute = createRouteMatcher(["/onboarding"])
-
-
+const isOnboardingRoute = createRouteMatcher(["/onboarding"]);
 
 export default clerkMiddleware(async (auth, request) => {
-  const cookieStore = await cookies()
-  const convex_user_id = cookieStore.get('convex_user_id')
+  const cookieStore = await cookies();
+  const convex_user_id = cookieStore.get("convex_user_id");
   if (!isPublicRoute(request)) {
     await auth.protect();
   }
 
-  if(!convex_user_id && isPrivateRoute(request)) {
-    return NextResponse.redirect(`${process.env.SITE_URL}/onboarding`)
+  if (!convex_user_id && isPrivateRoute(request)) {
+    return NextResponse.redirect(`${process.env.SITE_URL}/onboarding`);
   }
 
-  if(convex_user_id && isOnboardingRoute(request)) {
-    return NextResponse.redirect(`${process.env.SITE_URL}/events`)
+  if (convex_user_id && isOnboardingRoute(request)) {
+    return NextResponse.redirect(`${process.env.SITE_URL}/events`);
   }
- 
 });
 
 export const config = {

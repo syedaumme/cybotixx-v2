@@ -9,5 +9,7 @@ export default defineSchema({
     courseYear: v.string(),
     phoneNumber: v.string(),
     clerkId: v.string(),
+    clerkImageUrl: v.string(),
+    roleType: v.string(),
   }),
 });

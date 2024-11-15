@@ -10,6 +10,7 @@ type RequestType = {
   courseYear: string;
   phoneNumber: string;
   clerkId: string;
+  clerkImageUrl: string;
 };
 
 type ResponseType = Id<"users"> | null;
