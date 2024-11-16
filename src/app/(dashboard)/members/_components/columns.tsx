@@ -57,6 +57,8 @@ const ActionsCell = ({ convex_user_id }: { convex_user_id: Id<"users"> }) => {
 
   if (!data) return;
 
+  console.log(data.roleType)
+
   return (
     <Dialog>
       <DialogHeader>

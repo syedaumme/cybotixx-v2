@@ -87,15 +87,25 @@ export const getMember = query({
 
 export const assignRoleType = mutation({
   args: {
-    convex_user_id: v.id("users"),
+    clerkId: v.string(),
     roleType: v.string(),
   },
   handler: async (ctx, args) => {
-    const { convex_user_id } = args;
-    const adminnedMember = await ctx.db.patch(convex_user_id, {
+    const { clerkId } = args;
+
+    const member = await ctx.db
+      .query("users")
+      .filter((q) => q.eq(q.field("clerkId"), clerkId))
+      .first();
+
+    if (!member) return null;
+
+    const adminnedMember = await ctx.db.patch(member._id, {
       roleType: args.roleType,
     });
 
     return adminnedMember;
   },
 });
+
+export const 
