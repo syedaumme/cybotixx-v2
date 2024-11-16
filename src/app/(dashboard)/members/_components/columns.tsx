@@ -49,6 +49,7 @@ export type Member = {
     | "CORE_MEMBER"
     | "MEMBER"
     | "BANNED";
+  registerNumber: string;
 };
 
 // Actions Column Wrapper Component
@@ -58,7 +59,6 @@ export type Member = {
 //   const {userId} = useAuth()
 
 //   const { data } = useGetUserByClerkId({ clerkId });
-
 
 //   if (!data) return;
 
@@ -147,20 +147,20 @@ export type Member = {
 //   );
 // };
 
+const ActionsCell = ({ convex_user_id }: { convex_user_id: Id<"users"> }) => {
+  const { userId } = useAuth();
+  const { data: currentUser } = useGetUserByClerkId({
+    clerkId: userId as string,
+  });
+  const { data: member } = useGetMemberByConvexId({ convex_user_id });
 
-const ActionsCell = ({convex_user_id}: {convex_user_id: Id<"users">}) => {
-  const {userId} = useAuth()
-  const {data: currentUser} = useGetUserByClerkId({clerkId: userId as string})
-  const {data: member} = useGetMemberByConvexId({convex_user_id})
+  const { mutate } = useAssignRoleType();
 
-  
-  const {mutate} = useAssignRoleType()
-  
-  if(!currentUser) return null
+  if (!currentUser) return null;
 
-  if(!member) return null
+  if (!member) return null;
 
-    return (
+  return (
     <Dialog>
       <DialogHeader>
         <DialogTitle>
@@ -182,74 +182,76 @@ const ActionsCell = ({convex_user_id}: {convex_user_id: Id<"users">}) => {
             </DropdownMenuItem>
           </DialogTrigger>
 
-          {((currentUser.roleType === "SUPER_ADMIN" || currentUser.roleType === "ADMIN") && (member.roleType !== "SUPER_ADMIN")) && (
-            <>
-            <DropdownMenuSeparator />
-              <DropdownMenuLabel>Promote</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {currentUser.roleType === "SUPER_ADMIN" && (
+          {(currentUser.roleType === "SUPER_ADMIN" ||
+            currentUser.roleType === "ADMIN") &&
+            member.roleType !== "SUPER_ADMIN" && (
+              <>
+                <DropdownMenuSeparator />
+                <DropdownMenuLabel>Promote</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {currentUser.roleType === "SUPER_ADMIN" && (
+                  <DropdownMenuItem
+                    onClick={() => {
+                      mutate({ convex_user_id, roleType: "ADMIN" });
+                      toast.success("Role assigned successfully");
+                    }}
+                  >
+                    <ShieldHalf className="size-4 md:size-5 text-emerald-500 fill-green-500/20" />
+                    Admin
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuItem
                   onClick={() => {
-                    mutate({ convex_user_id, roleType: "ADMIN" });
+                    mutate({ convex_user_id, roleType: "MODERATOR" });
                     toast.success("Role assigned successfully");
                   }}
                 >
-                  <ShieldHalf className="size-4 md:size-5 text-emerald-500 fill-green-500/20" />
-                  Admin
+                  <ShieldCheck className="size-4 md:size-5 text-blue-500 fill-blue-500/20" />
+                  Moderator
                 </DropdownMenuItem>
-              )}
-              <DropdownMenuItem
-                onClick={() => {
-                  mutate({ convex_user_id, roleType: "MODERATOR" });
-                  toast.success("Role assigned successfully");
-                }}
-              >
-                <ShieldCheck className="size-4 md:size-5 text-blue-500 fill-blue-500/20" />
-                Moderator
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => {
-                  mutate({ convex_user_id, roleType: "CORE_MEMBER" });
-                  toast.success("Role assigned successfully");
-                }}
-              >
-                <ShieldEllipsis className="size-4 md:size-5 text-orange-500 fill-orange-500/20" />
-                Core Member
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => {
-                  mutate({ convex_user_id, roleType: "MEMBER" });
-                  toast.success("Role assigned successfully");
-                }}
-              >
-                <Shield className="size-4 md:size-5 text-violet-500 fill-violet-500/20" />
-                Member
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => {
-                  mutate({ convex_user_id, roleType: "BANNED" });
-                  toast.success("Role assigned successfully");
-                }}
-              >
-                <ShieldBan className="size-4 md:size-5 text-gray-500 fill-gray-500/20" />
-                Ban Member
-              </DropdownMenuItem>
-            </>
-          )}
+                <DropdownMenuItem
+                  onClick={() => {
+                    mutate({ convex_user_id, roleType: "CORE_MEMBER" });
+                    toast.success("Role assigned successfully");
+                  }}
+                >
+                  <ShieldEllipsis className="size-4 md:size-5 text-orange-500 fill-orange-500/20" />
+                  Core Member
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    mutate({ convex_user_id, roleType: "MEMBER" });
+                    toast.success("Role assigned successfully");
+                  }}
+                >
+                  <Shield className="size-4 md:size-5 text-violet-500 fill-violet-500/20" />
+                  Member
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    mutate({ convex_user_id, roleType: "BANNED" });
+                    toast.success("Role assigned successfully");
+                  }}
+                >
+                  <ShieldBan className="size-4 md:size-5 text-gray-500 fill-gray-500/20" />
+                  Ban Member
+                </DropdownMenuItem>
+              </>
+            )}
         </DropdownMenuContent>
       </DropdownMenu>
       <MemberCard convex_user_id={convex_user_id} />
     </Dialog>
   );
-  
-
-}
-
-
-
+};
 
 // Table Columns Definition
 export const columns: ColumnDef<Member>[] = [
+  {
+    accessorKey: "registerNumber",
+    header: "",
+    cell: () => null,
+  },
   {
     accessorKey: "image",
     header: "Image",
