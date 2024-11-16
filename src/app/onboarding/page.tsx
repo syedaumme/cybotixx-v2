@@ -30,8 +30,8 @@ const OnboardingPage = () => {
       path: "/",
     });
 
-    return null; // Prevent rendering further
     router.replace("/events"); // Redirect if user data is found
+    return;
   }
 
   // Render onboarding form if no user data exists

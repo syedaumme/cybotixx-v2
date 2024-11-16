@@ -1,5 +1,4 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 const isPublicRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)", "/"]);
@@ -14,7 +13,7 @@ const isPrivateRoute = createRouteMatcher([
 const isOnboardingRoute = createRouteMatcher(["/onboarding"]);
 
 export default clerkMiddleware(async (auth, request) => {
-  const cookieStore = await cookies();
+  const cookieStore = request.cookies;
   const convex_user_id = cookieStore.get("convex_user_id");
   if (!isPublicRoute(request)) {
     await auth.protect();
